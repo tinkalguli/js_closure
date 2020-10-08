@@ -1,11 +1,18 @@
 // Challenge 1. Flattening
 let arrays = [[1, 2, 3], [4, 5], [6]];
 
-// Your code here.
+arrays.reduce((a, c) => a.concat(c), []);
 // → [1, 2, 3, 4, 5, 6]
 
 // Challenge 2. Your own loop
 // Your code here.
+
+function loop(n, condition, change, fn) {
+  while (condition(n)) {
+    fn(n);
+    n = change(n);
+  }
+}
 
 loop(3, n => n > 0, n => n - 1, console.log);
 // → 3
@@ -14,7 +21,20 @@ loop(3, n => n > 0, n => n - 1, console.log);
 
 // Challenge 3. Everything
 function every(array, test) {
-  // Your code here.
+  let arr = [];
+  for (element of array) {
+      if (test(element)) arr.push(element);
+  }
+  return arr.length == array.length;
+}
+
+function every(array, test) {
+  let arr = [];
+  let elementsArray = [...array].map(e => [e]);
+  elementsArray.forEach(e => {
+    if (e.some(a => test(a))) arr.push(e[0]);
+  });
+  return arr.length == array.length;
 }
 
 console.log(every([1, 3, 5], n => n < 10));

@@ -8,9 +8,11 @@ var counter = (function() {
   return {
     increment: function() {
       changeBy(1);
+      console.log(privateCounter);
     },
     decrement: function() {
       changeBy(-1);
+      console.log(privateCounter);
     },
     value: function() {
       return privateCounter;

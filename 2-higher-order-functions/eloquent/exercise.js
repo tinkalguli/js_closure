@@ -46,7 +46,23 @@ console.log(every([], n => n < 10));
 
 // Challenge 4. Dominant writing direction
 function dominantDirection(text) {
-  // Your code here.
+  let charArr = text.split('');
+  let directionCount = {
+    rtl : 0,
+    ltr : 0,
+    ttb : 0
+  }
+  charArr.forEach(char => {
+    for (let script of SCRIPTS) {
+      if (script.ranges.some(([from, to]) => {
+        return char.codePointAt() >= from && char.codePointAt() < to;
+      })) {
+        directionCount[script.direction] += 1;
+      }
+    }
+  });
+  let finalDirection = Object.values(directionCount).reduce((a, c) => a > c ? a : c);
+  return Object.keys(directionCount)[Object.values(directionCount).indexOf(finalDirection)];
 }
 
 console.log(dominantDirection("Hello!"));

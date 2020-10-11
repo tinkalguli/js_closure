@@ -7,23 +7,54 @@
 	   alert(string);
 	 };
 	 ```
+- 
+```js
+function nonsense(string) {
+    var blab = function(){
+        alert(string);
+    };
+    blab();
+}
+```
 
 1. In your function, `nonsense`, change the immediate call to a setTimeout so that the call to `blab` comes after 2 seconds. The `blab` function itself should stay the same as before.
-
+- 
+```js
+function nonsense(string) {
+    var blab = function(){
+        alert(string);
+    };
+    setTimeout(blab, 2000);
+}
+```
 1. Now, instead of calling `blab` inside of `nonsense`, return `blab` (without invoking it). Call `nonsense` with some string and store the returned value (the `blab` function) in a variable called `blabLater`. Call `nonsense` again with a different string and store the returned value in a variable called `blabAgainLater`.
+
+```js
+function nonsense(string) {
+    var blab = function(){
+        alert(string);
+    };
+    return blab;
+}
+
+let blabLater = nonsense("First string");
+let blabAgainLater = nonsense("Second string");
+```
 
 1. Inspect `blabLater` and `blabAgainLater` in your console. Call them (they are functions!) and see what happens!
 
+```js
+blabLater() // alert "First string"
+blabAgainLater() // alert "Second string"
+```
 
 1. Write a function with a closure. The first function should only take one argument, someone's first name, and the inner function should take one more argument, someone's last name. The inner function should console.log both the first name and the last name.
 	```javascript
 	var lastNameTrier = function(firstName){
-	   //does stuff
-
-	    var innerFunction = function() {
-	        //does stuff
-	    };
-	    //maybe returns something here
+		var innerFunction = function(lastName) {
+			console.log(`${firstName} ${lastName}`);
+		};
+		return innerFunction;
 	};
 	var firstNameFarmer = lastNameTrier('Farmer'); //logs nothing
 	firstNameFarmer('Brown'); //logs 'Farmer Brown'

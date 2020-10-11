@@ -43,29 +43,50 @@ function forEach(array, callback) {
 //Extension 1
 function mapWith(array, callback) {
     let arr = [];
-    array.forEach(element => arr.push(callback(element)));
+    forEach(array, () => {
+        arr.push(callback(element))
+    });
     return arr;
 }
 
 //Extension 2
 function reduce(array, callback, initialValue) {
     let acc = initialValue;
-    array.forEach(e => {
-        acc = callback(acc, e);
+    forEach(array, () => {
+        acc = callback(acc, element);
     });
     return acc;
 }
 
 //Extension 3
-function intersection(arrays) {}
+function intersection(...arrays) {
+    return arrays.reduce((a, c) => {
+        a.forEach((e, i) => {
+            if (!c.includes(e)) {
+                a.splice(i, 1);
+            }
+        });
+        return a;
+    });
+}
 
 console.log(intersection([5, 10, 15, 20], [15, 88, 1, 5, 7], [1, 10, 15, 5, 20]));
 // should log: [5, 15]
 
 //Extension 4
-function union(arrays) {}
+function union(...arrays) {
+    return arrays.reduce((a, c) => {
+        a.forEach((e) => {
+            if (c.includes(e)) {
+                c.splice(c.indexOf(e), 1);
+            }
+        });
+        ;
+        return a.concat(c);
+    });
+}
 
-// console.log(union([5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]));
+console.log(union([5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]));
 // should log: [5, 10, 15, 88, 1, 7, 100]
 
 //Extension 5

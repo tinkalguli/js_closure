@@ -60,7 +60,8 @@ function reduce(array, callback, initialValue) {
 
 //Extension 3
 function intersection(...arrays) {
-    return arrays.reduce((a, c) => {
+    let finalArr = arrays.map(e => [...new set(e)]);
+    return finalArr.reduce((a, c) => {
         a.forEach((e, i) => {
             if (!c.includes(e)) {
                 a.splice(i, 1);
@@ -91,11 +92,10 @@ console.log(union([5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]));
 
 //Extension 5
 function objOfMatches(array1, array2, callback) {
-    let obj = {};
-    array1.forEach((e, i) => {
-        if (callback(e) == array2[i]) obj[e] = array2[i];
-    });
-    return obj;
+    array1.reduce((acc, cv, i) => {
+        if (callback(cv) == array2[i]) acc[cv] = array2[i];
+        return acc;
+    }, {});
 }
 
 console.log(objOfMatches(['hi', 'howdy', 'bye', 'later', 'hello'], ['HI', 'Howdy', 'BYE', 'LATER', 'hello'], function(str) { return str.toUpperCase(); }));
@@ -103,15 +103,11 @@ console.log(objOfMatches(['hi', 'howdy', 'bye', 'later', 'hello'], ['HI', 'Howdy
 
 //Extension 6
 function multiMap(arrVals, arrCallbacks) {
-    let obj = {};
-    arrVals.forEach(e => {
+    arrVals.reduce((acc, cv) => {
         let arr = [];
-        arrCallbacks.forEach(a => {
-            arr.push(a(e));
-        });
-        obj[e] = arr;
-    });
-    return obj;
+        acc[cv] = arrCallbacks.map(a => a(cv));
+        return acc;
+    }, {});
 }
 
 console.log(multiMap(['catfood', 'glue', 'beer'], [function(str) { return str.toUpperCase(); }, function(str) { return str[0].toUpperCase() + str.slice(1).toLowerCase(); }, function(str) { return str + str; }]));

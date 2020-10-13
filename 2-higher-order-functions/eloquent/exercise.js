@@ -1,16 +1,18 @@
 // Challenge 1. Flattening
 let arrays = [[1, 2, 3], [4, 5], [6]];
 
-arrays.reduce((a, c) => a.concat(c), []);
+arrays.reduce((accumulator, currentValue) =>
+ accumulator.concat(currentValue), []);
+
 // → [1, 2, 3, 4, 5, 6]
 
 // Challenge 2. Your own loop
 // Your code here.
 
-function loop(n, condition, change, fn) {
-  while (condition(n)) {
-    fn(n);
-    n = change(n);
+function loop(value, condition, change, takeAction) {
+  while (condition(value)) {
+    takeAction(value);
+    value = change(value);
   }
 }
 
@@ -21,20 +23,23 @@ loop(3, n => n > 0, n => n - 1, console.log);
 
 // Challenge 3. Everything
 function every(array, test) {
-  let arr = [];
-  for (element of array) {
-      if (test(element)) arr.push(element);
+  let resultedArray = [];
+  for (let element of array) {
+      if (test(element)) resultedArray.push(element);
   }
-  return arr.length == array.length;
+  return resultedArray.length == array.length;
 }
 
 function every(array, test) {
-  let arr = [];
-  let elementsArray = [...array].map(e => [e]);
-  elementsArray.forEach(e => {
-    if (e.some(a => test(a))) arr.push(e[0]);
+  let resultedArray = [];
+
+  array.map(value => [value]).forEach(element => {
+    if (element.some(actualValue => test(actualValue))) {
+      resultedArray.push(element[0]);
+    }
   });
-  return arr.length == array.length;
+
+  return resultedArray.length == array.length;
 }
 
 console.log(every([1, 3, 5], n => n < 10));
@@ -46,13 +51,13 @@ console.log(every([], n => n < 10));
 
 // Challenge 4. Dominant writing direction
 function dominantDirection(text) {
-  let charArr = text.split('');
+  let charArray = text.split('');
   let directionCount = {
     rtl : 0,
     ltr : 0,
     ttb : 0
   }
-  charArr.forEach(char => {
+  charArray.forEach(char => {
     for (let script of SCRIPTS) {
       if (script.ranges.some(([from, to]) => {
         return char.codePointAt() >= from && char.codePointAt() < to;
@@ -61,7 +66,9 @@ function dominantDirection(text) {
       }
     }
   });
-  let finalDirection = Object.values(directionCount).reduce((a, c) => a > c ? a : c);
+  let finalDirection = Object.values(directionCount)
+  .reduce((a, c) => a > c ? a : c);
+  
   return Object.keys(directionCount)[Object.values(directionCount).indexOf(finalDirection)];
 }
 

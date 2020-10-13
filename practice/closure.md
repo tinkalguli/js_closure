@@ -80,10 +80,14 @@ cricket(); // Your score of Cricket is 2
 
 ```js
 function getCard(suit) {
-  return function () {
-    let arr = [2,3,4,5,6,7,8,9,10,"J", "Q", "K", "A"];
-    randomNum = Math.trunc(Math.random() * 12);
-    return `Card is: ${arr[randomNum]} ${suit}`;
+  let cardOptions = ['club', 'spade', 'heart', 'dimond'];
+
+  if (cardOptions.includes(suit)) {
+      return function () {
+      let cardNumbers = [2,3,4,5,6,7,8,9,10,"J", "Q", "K", "A"];
+      randomNum = Math.trunc(Math.random() * 12);
+      return `Card is: ${cardNumbers[randomNum]} ${suit}`;
+    }
   }
 }
 

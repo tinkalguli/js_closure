@@ -18,18 +18,18 @@ console.log(addS('bagel'));
 
 // Challenge 3
 function map(array, callback) {
-    let arr = [];
-    for (element of array) {
-        arr.push(callback(element));
+    let resutedArray = [];
+    for (let element of array) {
+        resutedArray.push(callback(element));
     }
-    return arr;
+    return resutedArray;
 }
 
 console.log(map([1, 2, 3], addTwo));
 
 // Challenge 4
 function forEach(array, callback) {
-    for (element of array) {
+    for (let element of array) {
         callback(element);
     }
 }
@@ -42,16 +42,16 @@ function forEach(array, callback) {
 
 //Extension 1
 function mapWith(array, callback) {
-    let arr = [];
+    let resutedArray = [];
     forEach(array, () => {
-        arr.push(callback(element))
+        resutedArray.push(callback(element))
     });
-    return arr;
+    return resutedArray;
 }
 
 //Extension 2
 function reduce(array, callback, initialValue) {
-    let acc = initialValue;
+    let acc = initialValue == undefined ? array[0] : initialValue;
     forEach(array, () => {
         acc = callback(acc, element);
     });
@@ -60,14 +60,15 @@ function reduce(array, callback, initialValue) {
 
 //Extension 3
 function intersection(...arrays) {
-    let finalArr = arrays.map(e => [...new set(e)]);
-    return finalArr.reduce((a, c) => {
-        a.forEach((e, i) => {
-            if (!c.includes(e)) {
-                a.splice(i, 1);
+    let finalArr = arrays.map(value => [...new Set(value)]);
+
+    return finalArr.reduce((accumulator, currentValue) => {
+        accumulator.forEach((element, index) => {
+            if (!currentValue.includes(element)) {
+                accumulator.splice(index, 1);
             }
         });
-        return a;
+        return accumulator;
     });
 }
 
@@ -76,14 +77,13 @@ console.log(intersection([5, 10, 15, 20], [15, 88, 1, 5, 7], [1, 10, 15, 5, 20])
 
 //Extension 4
 function union(...arrays) {
-    return arrays.reduce((a, c) => {
-        a.forEach((e) => {
-            if (c.includes(e)) {
-                c.splice(c.indexOf(e), 1);
+    return arrays.reduce((accumulator, currentValue) => {
+        accumulator.forEach((element) => {
+            if (currentValue.includes(element)) {
+                currentValue.splice(currentValue.indexOf(element), 1);
             }
         });
-        ;
-        return a.concat(c);
+        return accumulator.concat(currentValue);
     });
 }
 
@@ -92,9 +92,11 @@ console.log(union([5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]));
 
 //Extension 5
 function objOfMatches(array1, array2, callback) {
-    array1.reduce((acc, cv, i) => {
-        if (callback(cv) == array2[i]) acc[cv] = array2[i];
-        return acc;
+    return array1.reduce((accumulator, currentValue, currentIndex) => {
+        if (callback(currentValue) == array2[currentIndex]){
+            accumulator[currentValue] = array2[currentIndex];
+        }
+        return accumulator;
     }, {});
 }
 
@@ -103,10 +105,9 @@ console.log(objOfMatches(['hi', 'howdy', 'bye', 'later', 'hello'], ['HI', 'Howdy
 
 //Extension 6
 function multiMap(arrVals, arrCallbacks) {
-    arrVals.reduce((acc, cv) => {
-        let arr = [];
-        acc[cv] = arrCallbacks.map(a => a(cv));
-        return acc;
+    return arrVals.reduce((accumulator, currentValue) => {
+        accumulator[currentValue] = arrCallbacks.map(a => a(currentValue));
+        return accumulator;
     }, {});
 }
 
